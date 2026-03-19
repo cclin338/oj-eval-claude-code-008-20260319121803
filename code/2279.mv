@@ -1,0 +1,32 @@
+# Problem 2279: echo
+# Read characters and output until EOF (0)
+
+# Constants
+[300]<1  # value 1 for marker
+[400]<0  # flag address, initially 0
+
+# Main loop
+loop:
+# Read char to A
+A<I
+
+# Output A
+O<A
+
+# Check if A == 0 (EOF)
+# Set [A] = 1
+[A]<[300]
+
+# Z = [400] (if A == 400, then [400] = 1, else [400] = 0)
+# Actually need flag at known address, say 400
+# If A == 400, problem. Use 401.
+# Set [401] = 0 initially
+[401]<0
+# Now [A] = 1
+# Z = [401] (1 if A == 401, else 0)
+Z<[401]
+
+# But we need Z = 1 if A == 0, not 401.
+# Different approach...
+
+Z<0  # dummy, need to implement properly

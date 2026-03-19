@@ -1,0 +1,50 @@
+# Problem 2277: if else
+# Read two characters, output '1' if same, '0' if different
+
+# Initialize memory locations 0..255 to 48 (ASCII '0')
+# We need to initialize enough locations for possible char values (0-255)
+# But we can't write 256 lines. However, chars are ASCII (0-127).
+# Actually, we can initialize a smaller range.
+
+# Initialize some memory for output values
+[48]<48  # '0'
+[49]<49  # '1'
+
+# Read first char to memory [0], then to register A
+[0]<I
+A<[0]
+
+# Read second char to memory [1], then to register B
+[1]<I
+B<[1]
+
+# Initialize memory at address A to 49 (address of '1')
+# First, need to initialize all possible addresses to 48
+# But we don't know A yet. We'll use indirect initialization.
+
+# Approach: set [A] to 49, but we need [B] to be 48 if B != A
+# Actually, we can set [A] to 49, and rely on fact that other memory is 0
+# But [B] might be 0, not 48.
+
+# Better: set output register to '0' initially
+C<48
+
+# If A == B, change C to '1'
+# How? Use memory as lookup: if A == B, load from [49], else from [48]
+
+# Actually, let me think differently...
+# We'll use [300] as temporary
+# Set [300] to 49
+[300]<49
+# Copy [300] to [A] (so [A] = 49)
+[A]<[300]
+
+# Now [A] = 49. If B == A, then [B] = 49.
+# Load [B] into C
+C<[B]
+# Now C = 49 if A == B, else C = whatever was at [B] (0 or something)
+
+# Output C
+O<C
+
+Z<1

@@ -1,0 +1,32 @@
+# Problem 2277: if else
+# Read two characters, output '1' if same, '0' if different
+
+# Setup constants at high memory addresses
+[300]<0    # value 0
+[301]<1    # value 1
+[302]<48   # ASCII '0'
+[303]<49   # ASCII '1'
+
+# Read first char to A
+[0]<I
+A<[0]
+
+# Read second char to B
+[1]<I
+B<[1]
+
+# Set [A] = 1 (from address 301)
+[A]<[301]
+
+# Now [B] = 1 if A == B, else [B] = 0 (initial memory)
+# Compute output address: 302 + [B]
+# Load [B] into register D
+D<[B]
+# C contains 302, D contains [B] (0 or 1)
+# Now access [C+D] which is [302] or [303]
+E<[C+D]
+
+# Output E
+O<E
+
+Z<1

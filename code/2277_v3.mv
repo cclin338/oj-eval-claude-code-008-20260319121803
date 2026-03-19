@@ -1,0 +1,23 @@
+# Problem 2277: if else
+# Read two characters, output '1' if same, '0' if different
+
+# Setup constants
+[300]<48  # '0'
+[301]<49  # '1'
+
+# Read first char to A
+[0]<I
+A<[0]
+
+# Read second char to B
+[1]<I
+B<[1]
+
+# Set [A] to '1' (49)
+[A]<[301]
+
+# Set [B] to '0' (48)
+# If A == B, this overwrites [A] with 48, which is wrong!
+# Actually need different approach...
+
+Z<1

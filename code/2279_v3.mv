@@ -1,0 +1,19 @@
+# Problem 2279: echo - correct version
+# Read and output characters until EOF (0)
+
+[300]<1
+[0]<0
+
+# Read char to A
+A<I
+
+# Check if A == 0, halt if true
+[A]<[300]
+Z<[0]
+# If A != 0, Z = 0, continue
+# If A == 0, Z = 1, halt here
+
+# Output A (only reached if A != 0)
+O<A
+
+# Loop back to start

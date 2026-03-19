@@ -1,0 +1,24 @@
+# Problem 2279: echo
+# Read and output characters until EOF (0)
+
+# Constants
+[300]<1  # marker value
+
+# Initialize flag at address 0 to 0
+[0]<0
+
+# Main loop
+# Read char to A
+A<I
+
+# Output A
+O<A
+
+# Check if A == 0
+# Set [A] = 1
+[A]<[300]
+
+# Z = [0] (1 if A == 0, else 0)
+Z<[0]
+
+# Loop continues if Z == 0, halts if Z == 1

@@ -1,0 +1,35 @@
+# Problem 2277: if else
+# Read two characters, output '1' if same, '0' if different
+
+# Constants
+[300]<1    # value 1
+[200]<48   # ASCII '0'
+[201]<49   # ASCII '1'
+
+# Read first char to A
+[0]<I
+A<[0]
+
+# Read second char to B
+[1]<I
+B<[1]
+
+# Set [A] = 1
+[A]<[300]
+
+# Now [B] = 1 if A == B, else 0
+# Load [B] into C
+C<[B]
+
+# Compute address = 200 + C
+# D = 200
+D<200
+
+# Load from [D+C] which is [200] or [201]
+E<[D+C]
+
+# Output result
+O<E
+
+# Halt
+Z<1

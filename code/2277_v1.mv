@@ -1,0 +1,42 @@
+# Problem 2277: if else
+# Read two characters, output '1' if same, '0' if different
+
+# Initialize: set all memory 0..255 to 1 (ASCII '1' = 49)
+# We'll use a loop with register C as counter
+C<0
+[0]<49
+[1]<49
+[2]<49
+[3]<49
+# ... can't initialize all 256 manually
+
+# Actually, simpler approach: use two registers
+
+# Read first char to A via memory [0]
+[0]<I
+A<[0]
+
+# Read second char to B via memory [1]
+[1]<I
+B<[1]
+
+# Compare: if A == B, output '1', else '0'
+# We'll use memory at address 0 as flag
+# Set [0] to '0' initially
+[0]<48
+
+# If A == B, set [0] to '1'
+# How to check equality with only mov?
+# Use: if [A] == [B]? But we control what's at [A] and [B]
+
+# Set marker at [A] to 1
+[300]<1
+[A]<[300]
+
+# Check marker at [B]
+C<[B]
+# If C == 1, then A == B
+
+# Actually this is getting complex...
+
+Z<1
