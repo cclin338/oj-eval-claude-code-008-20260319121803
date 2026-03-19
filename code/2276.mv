@@ -1,29 +1,15 @@
 # Hello World program for mov language
-# Output each character directly
-A<72
-O<A
-A<101
-O<A
-A<108
-O<A
-A<108
-O<A
-A<111
-O<A
-A<32
-O<A
-A<87
-O<A
-A<111
-O<A
-A<114
-O<A
-A<108
-O<A
-A<100
-O<A
-A<33
-O<A
-
-# Halt program
+# Output each character directly using immediate values
+O<72
+O<101
+O<108
+O<108
+O<111
+O<32
+O<87
+O<111
+O<114
+O<108
+O<100
+O<33
 Z<1

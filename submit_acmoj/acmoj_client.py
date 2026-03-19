@@ -40,23 +40,28 @@ class ACMOJClient:
         self.submission_log_file = '/workspace/submission_ids.log'
         
 
-    def _make_request(self, method: str, endpoint: str, data: Dict[str, Any] = None, 
+    def _make_request(self, method: str, endpoint: str, data: Dict[str, Any] = None,
                      params: Dict[str, Any] = None) -> Optional[Dict]:
         url = f"{self.api_base}{endpoint}"
         try:
             if method.upper() == "GET":
                 response = requests.get(url, headers=self.headers, params=params, timeout=10)
             elif method.upper() == "POST":
+                print(f"DEBUG: Making POST request to {url} with data: {data}")
                 response = requests.post(url, headers=self.headers, data=data, timeout=10)
             else:
                 print(f"Unsupported HTTP method: {method}")
                 return None
 
+            print(f"DEBUG: Response status: {response.status_code}")
+            print(f"DEBUG: Response headers: {response.headers}")
+            print(f"DEBUG: Response text: {response.text[:500]}")
+
             if response.status_code == 204:
                 return {"status": "success", "message": "Operation successful"}
 
             response.raise_for_status()
-            
+
             if response.content:
                 return response.json()
             else:
@@ -93,11 +98,38 @@ class ACMOJClient:
 
     def submit_code(self, problem_id: int, language: str, code_text: str) -> Optional[Dict]:
         data = {"language": language, "code": code_text}
-        result = self._make_request("POST", f"/problem/{problem_id}/submit", data=data)
-        if result and 'id' in result:
-            self._save_submission_id(result['id'])
+        # Try with json instead of form data
+        url = f"{self.api_base}/problem/{problem_id}/submit"
+        print(f"DEBUG: Submitting to {url} with data: {data}")
+        try:
+            # Try JSON first
+            headers = self.headers.copy()
+            headers["Content-Type"] = "application/json"
+            response = requests.post(url, headers=headers, json=data, timeout=10)
+            print(f"DEBUG: JSON response status: {response.status_code}")
+            print(f"DEBUG: JSON response text: {response.text[:500]}")
 
-        return result
+            if response.status_code in [200, 201]:
+                result = response.json()
+                if result and 'id' in result:
+                    self._save_submission_id(result['id'])
+                return result
+            else:
+                # Try form-encoded as fallback
+                print(f"DEBUG: JSON failed, trying form-encoded...")
+                response = requests.post(url, headers=self.headers, data=data, timeout=10)
+                print(f"DEBUG: Form response status: {response.status_code}")
+                if response.status_code in [200, 201]:
+                    result = response.json()
+                    if result and 'id' in result:
+                        self._save_submission_id(result['id'])
+                    return result
+                else:
+                    print(f"DEBUG: Form also failed: {response.text}")
+                    return None
+        except Exception as e:
+            print(f"Error in submit_code: {e}")
+            return None
 
     def get_submission_detail(self, submission_id: int) -> Optional[Dict]:
         return self._make_request("GET", f"/submission/{submission_id}")
